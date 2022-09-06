@@ -1,7 +1,9 @@
 import { Router } from 'express';
-import { login, register } from '../controllers/authController.js';
+import { infoUser, login, register, refreshToken, logOut} from '../controllers/authController.js';
 import { body } from 'express-validator';
 import { validationResultGlobal } from '../middlewares/validationResultGlobal.js';
+// import { requireTokenLocalStorage } from '../middlewares/requireToken.js';
+import { requireTokenCookie} from '../middlewares/requireToken.js';
 
 const router = Router();
 
@@ -27,5 +29,10 @@ router.post('/login',
     ],
     validationResultGlobal,
     login);
+
+// router.get('/protected', requireTokenLocalStorage, infoUser)
+router.get('/protected', requireTokenCookie, infoUser)
+router.get("/refresh", refreshToken)
+router.get("/logout", logOut)
 
 export default router;
